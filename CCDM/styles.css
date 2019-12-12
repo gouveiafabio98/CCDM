@@ -1,0 +1,801 @@
+/* Variáveis */
+
+:root {
+    --sizebeg: calc(10vw * 4);
+    --sizeend: calc((100vw - 10vw) * 2 + (100vh - 10vw) * 2);
+    --sizespaceend: calc(var(--sizeend)/8);
+}
+
+/* Outros */
+html {
+    scroll-behavior: smooth;
+}
+
+@font-face {
+    font-family: 'Zsia';
+    src: url('fonts/Zsia.woff2') format('woff2'),
+        url('fonts/Zsia.woff') format('woff');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: "AvenirLTStd-Medium";
+    src: url("fonts/AvenirLTStd-Medium.woff") format("woff"),
+        url("fonts/AvenirLTStd-Medium.woff2") format("woff2");
+    font-weight: normal;
+    font-style: normal;
+}
+
+
+.zsia {
+    font-family: 'Zsia';
+    font-weight: normal;
+    font-style: normal;
+}
+
+body {
+    margin: 0;
+    font-family: 'AvenirLTStd-Medium';
+    background-color: #FEEC33;
+}
+
+/* Animação retângulo */
+
+svg {
+    position: fixed;
+    top: 0;
+}
+
+rect.loading-animation {
+    fill: none;
+    stroke: black;
+    stroke-width: 0.5vw;
+
+    width: 10vw;
+    height: 10vw;
+
+    x: calc(50% - 5vw);
+    y: calc(50% - 5vw);
+
+    stroke-dasharray: 15vw 5vw 15vw 5vw;
+}
+
+rect.dash {
+    animation: dash 10s linear infinite;
+}
+
+rect.zoom {
+    animation: rect 2s ease-in-out, dash 10s linear infinite;
+    animation-fill-mode: forwards;
+}
+
+rect.zoomout {
+    animation: rectout 2s ease-in-out, dash 10s linear infinite;
+    animation-fill-mode: forwards;
+}
+
+@keyframes rect {
+    to {
+        width: calc(100vw - 10vw);
+        height: calc(100vh - 10vw);
+
+        x: calc(50% - calc(100vw - 10vw) / 2);
+        y: calc(50% - calc(100vh - 10vw) / 2);
+
+        stroke-dasharray: calc(var(--sizespaceend) * 3) var(--sizespaceend) calc(var(--sizespaceend) * 3) var(--sizespaceend);
+    }
+}
+
+@keyframes dash {
+    to {
+        stroke-dashoffset: calc(calc(100vh - 10vw) + calc(100vw - 10vw));
+    }
+}
+
+@keyframes rectout {
+    from {
+        width: calc(100vw - 10vw);
+        height: calc(100vh - 10vw);
+
+        x: calc(50% - calc(100vw - 10vw) / 2);
+        y: calc(50% - calc(100vh - 10vw) / 2);
+
+        stroke-dasharray: calc(var(--sizespaceend) * 3) var(--sizespaceend) calc(var(--sizespaceend) * 3) var(--sizespaceend);
+    }
+
+    to {
+        width: 10vw;
+        height: 10vw;
+
+        x: calc(50% - 5vw);
+        y: calc(50% - 5vw);
+
+        stroke-dasharray: 15vw 5vw 15vw 5vw;
+    }
+}
+
+/* Letras da animação do retângulo */
+
+#letters {
+    height: 8vh;
+    font-size: 4.2vw;
+    position: fixed;
+}
+
+#letters .first {
+    top: calc(100vh / 2 - 5vw - 4.2vw);
+    left: calc(100vw / 2 - 5vw + 6px);
+    width: 10vw;
+    position: fixed;
+    transition: all 2s ease-in-out;
+    text-align: right;
+}
+
+#letters .first.after {
+    top: calc(100vh / 2 - 50vh + 5vw - 4.2vw);
+    left: calc(5vw + 6px);
+    width: calc(100vw - 10vw);
+}
+
+#letters .second {
+    top: calc(100vh / 2 + 5vw);
+    left: calc(100vw / 2 - 5vw - 6px);
+    width: 10vw;
+    position: fixed;
+    transition: all 2s ease-in-out;
+}
+
+#letters .second.after {
+    top: calc(100vh / 2 + 50vh - 5vw);
+    left: calc(5vw - 6px);
+}
+
+/* Configurações do main */
+
+/* ---- Main desparece imediatamente ---- */
+
+main.imediato {
+    transition: all 0s linear;
+}
+
+/* ---- Main ---- */
+
+main {
+    display: flex;
+    justify-content: space-between;
+    position: absolute;
+    width: calc(100vw - 10vw);
+    height: calc(100vh - 10vw);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: opacity 0.5s ease-in-out;
+}
+
+/* ---- Main aparece após animação ---- */
+
+main.opacity {
+    opacity: 100%;
+}
+
+/* Conteudo do site */
+
+#content {
+    width: 100%;
+    display: flex;
+    justify-content: space-around;
+}
+
+/* Navbar */
+
+nav {
+    margin: 2vh;
+    position: fixed;
+    z-index: 1;
+    height: calc(100% - 4vh);
+}
+
+nav a {
+    text-decoration: none;
+    color: black;
+}
+
+nav ul {
+    display: flex;
+    justify-content: space-around;
+    font-size: 3vh;
+    writing-mode: vertical-rl;
+    transform: rotate(180deg);
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+nav li {
+    display: inline-block;
+    opacity: 0.5;
+    transition: all 0.5s ease-in-out;
+}
+
+nav li:hover {
+    opacity: 1;
+    text-decoration: line-through;
+}
+
+nav li.selected {
+    opacity: 1;
+    text-decoration: line-through;
+}
+
+
+/* Navigation content do intervenientes */
+
+.navigation {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    justify-content: space-between;
+}
+
+.navigation div {
+    opacity: 0.5;
+    text-align: center;
+    cursor: pointer;
+    transition: all 0.2s ease-in-out;
+}
+
+.navigation div.selected {
+    opacity: 1;
+    cursor: auto;
+}
+
+.navigation div:hover {
+    opacity: 1;
+}
+
+.dia {
+    font-size: 4.5vw;
+}
+
+.mes {
+    font-size: 2vw;
+}
+
+
+
+.textarea {
+    width: 100%;
+    overflow-y: scroll;
+    overflow: auto;
+}
+
+.title {
+    display: block;
+    font-size: 4.2vw;
+}
+
+.main-title {
+    font-size: 6vw;
+    margin: 0 0 0.5em 0;
+}
+
+.colunas {
+    display: flex;
+    position: absolute;
+    height: calc(100% - 100px);
+    margin: 50px 0;
+    width: 100%;
+    justify-content: center;
+}
+
+.coluna1 {
+    display: inline-block;
+    overflow-y: scroll;
+    overflow: auto;
+    margin: 0 10vw;
+}
+
+.coluna2 {
+    display: inline-block;
+    width: 65%;
+    overflow-y: scroll;
+    overflow: auto;
+    direction: rtl;
+    padding: 0 1vw;
+    scroll-behavior: smooth;
+}
+
+.colunas.duplo {
+    display: flex;
+    justify-content: center;
+    position: relative;
+}
+
+.colunaduplo1 {
+    width: 40%;
+}
+
+.colunaduplo2 {
+    width: 40%;
+    margin-left: 3vw;
+}
+
+.colunas.duplo .title {
+    font-size: 3vw;
+    text-align: left;
+}
+
+.colunas.duplo p {
+    text-align: left;
+}
+
+.colunas.duplo .main-title {
+    text-align: left;
+}
+
+.info p {
+    font-size: 1.2vw;
+}
+
+.info .break {
+    font-size: 2vw;
+    margin: 0;
+    line-height: 0;
+}
+
+.coluna2 > div {
+    transition: all 2s ease-in-out;
+    direction: ltr;
+}
+
+.coluna2 > div:not(:last-of-type) {
+    margin-bottom: 5vh;
+    border-bottom: 6px solid;
+}
+
+.colunas.center {
+    justify-content: space-between;
+    flex-direction: column;
+}
+
+p.center {
+    text-align: center;
+}
+
+span.center {
+    text-align: center;
+}
+
+#map {
+    display: flex;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    cursor: pointer;
+}
+
+#map #mapimg {
+    width: 80%;
+    height: 100%;
+    opacity: 1;
+    background-image: url(img/museudaciencia.jpg);
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: center;    
+}
+
+#navigation svg {
+    position: inherit;
+}
+
+p {
+    font-size: 1.2vw;
+}
+
+#content svg {
+    display: inline-block;
+    position: initial;
+}
+
+.social a {
+    text-decoration: none;
+    color: black;
+}
+
+.colunahome {
+    width: 80%;
+    text-align: center;
+    float: right;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.colunahome .info p {
+    font-size: 4vw;
+    text-align: center;
+}
+
+.colunahome .title {
+    font-size: 6vw;
+    margin: 0;
+    text-align: center;
+}
+
+.colunahome #navigation {
+    flex-direction: row;
+    height: auto;
+    justify-content: center;
+}
+
+.colunahome #navigation div {
+    display: inline-block;
+    margin: 0 4vw;
+}
+
+.colunahome #navigation .dia {
+    font-size: 6vw;
+}
+
+.colunahome #navigation .mes {
+    font-size: 3vw;
+}
+
+.colunas.home {
+    justify-content: space-around;
+}
+
+.colunahome > .info p {
+    display: none;
+    height: 0;
+    opacity: 0;
+    transition: all 2s ease-in-out;
+    margin: 0;
+}
+
+.colunahome .info p.display {
+    display: block;
+    height: auto;
+    opacity: 1;
+}
+
+.sociald {
+    display: flex;
+    justify-content: center;
+}
+
+.social.zsia {
+    font-size: 2vw;
+    margin: 0 2vw;
+}
+
+#about {
+    scroll-behavior: smooth;
+}
+
+#about svg {
+    cursor: pointer;
+}
+
+.textarea#about .colunaduplo1,
+.colunaduplo2 {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.textarea#about .title {
+    margin: 0;
+    font-size: 4vw;
+}
+
+.textarea#about::-webkit-scrollbar {
+    display: none;
+}
+
+#about .buttonc {
+    font-size: 6vw;
+    margin: 0 0 4vw 0;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: all 0.2s ease-in-out;
+}
+
+#about .buttonb {
+    font-size: 6vw;
+    margin: 4vw 0 0 0;
+    cursor: pointer;
+    opacity: 0.5;
+    transition: all 0.2s ease-in-out;
+}
+
+#about .buttonb:hover, #about .buttonc:hover {
+    opacity: 1;
+}
+
+.social.zsia svg {
+    width: 1.5vw;
+    height: 1.5vw;
+}
+
+p, span {
+    cursor: default;
+}
+
+::-webkit-scrollbar {
+    width: .5vw;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+    background-color: none;
+}
+
+::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+    background: black;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+    background: black;
+}
+
+
+@media only screen and (max-width: 768px),
+only screen and (max-height: 568px) {
+    .coluna1 {
+        display: none;
+    }
+
+    .main-title,
+    .colunahome .title {
+        font-size: 7vw;
+    }
+
+    .title {
+        font-size: 5.2vw;
+    }
+
+    .info p {
+        font-size: 2.2vw;
+    }
+
+    p {
+        font-size: 2.2vw;
+    }
+
+    .social.zsia {
+        font-size: 3vw;
+    }
+
+    .social.zsia svg {
+        width: 2.5vw;
+        height: 2 .5vw;
+    }
+
+    .colunahome > .info p {
+        font-size: 4vw;
+    }
+
+    .info .break {
+        font-size: 3vw;
+    }
+
+    .coluna2 {
+        width: 70%;
+        padding: 0 2vw;
+    }
+
+    .colunahome #navigation .dia {
+        font-size: 8vw;
+    }
+
+    .colunahome #navigation .mes {
+        font-size: 4vw;
+    }
+
+    ::-webkit-scrollbar {
+        width: 1vw;
+    }
+
+    .colunas.duplo {
+        flex-flow: wrap;
+    }
+
+    .colunas.duplo:last-of-type {
+        flex-flow: wrap-reverse;
+    }
+
+    .colunaduplo1 {
+        width: 80%;
+    }
+
+    .colunaduplo2 {
+        width: 80%;
+    }
+
+    .move {
+        display: none;
+    }
+
+    main.opacity {
+        overflow-y: scroll;
+    }
+
+    #about > div {
+        height: fit-content;
+    }
+}
+
+@media only screen and (max-height: 568px),
+only screen and (max-width: 640px) {
+    .colunas {
+        height: calc(100% - 12vh);
+    }
+
+    nav {
+        position: relative;
+        height: auto;
+    }
+
+    nav ul {
+        flex-wrap: wrap;
+        transform: rotate(0deg);
+        writing-mode: rl;
+    }
+
+    main {
+        display: block;
+    }
+
+    .colunas {
+        margin: 0;
+    }
+
+    .coluna2 {
+        width: 90%;
+    }
+}
+
+@media only screen and (max-width: 425px) {
+
+    .main-title,
+    .colunahome .title {
+        font-size: 9vw;
+    }
+
+    .title {
+        font-size: 7.2vw;
+    }
+
+    .info p {
+        font-size: 4.2vw;
+    }
+
+    p {
+        font-size: 4.2vw;
+    }
+
+    .social.zsia {
+        font-size: 5vw;
+    }
+
+    .social.zsia svg {
+        width: 4.5vw;
+        height: 4.5vw;
+    }
+
+    .colunahome > .info p {
+        font-size: 8vw;
+    }
+
+    .info .break {
+        font-size: 5vw;
+    }
+
+    .colunahome #navigation .dia {
+        font-size: 12vw;
+    }
+
+    .colunahome #navigation .mes {
+        font-size: 6vw;
+    }
+
+    .textarea#about .title {
+        font-size: 8vw;
+    }
+}
+
+@media only screen and (min-width: 2000px) and (max-height: 1000px),
+only screen and (max-height: 730px) {
+    .coluna1 {
+        display: none;
+    }
+
+    .coluna2 {
+        width: 90%;
+    }
+
+    nav {
+        position: relative;
+        height: auto;
+    }
+
+    nav ul {
+        flex-wrap: wrap;
+        transform: rotate(0deg);
+        writing-mode: rl;
+    }
+
+    main {
+        display: block;
+    }
+
+    .colunas {
+        margin: 0;
+    }
+
+    .colunaduplo1 {
+        width: 80%;
+    }
+
+    .colunaduplo2 {
+        width: 80%;
+    }
+
+    main {
+        display: block;
+    }
+
+    .colunas {
+        margin: 0;
+    }
+
+    .coluna2 {
+        width: 90%;
+    }
+
+    .colunas.duplo {
+        flex-flow: wrap;
+    }
+
+    .colunas.duplo:last-of-type {
+        flex-flow: wrap-reverse;
+    }
+
+    .colunaduplo1 {
+        width: 80%;
+    }
+
+    .colunaduplo2 {
+        width: 80%;
+    }
+
+    .move {
+        display: none;
+    }
+
+    main.opacity {
+        overflow-y: scroll;
+    }
+
+    #about > div {
+        height: fit-content;
+    }
+
+    #about p {
+        font-size: 2.2vw;
+    }
+    
+    #about p.zsia {
+        
+    }
+}
